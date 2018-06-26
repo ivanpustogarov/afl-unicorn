@@ -1,0 +1,30 @@
+--- unicorn-1.0.1/include/unicorn/x86.h	2017-04-20 02:14:24.000000000 -0400
++++ unicorn-1.0.1/include/unicorn/x86.h	2018-03-15 15:02:02.063272464 -0400
+@@ -30,6 +30,10 @@
+ // @user_data: user data passed to tracing APIs.
+ typedef void (*uc_cb_insn_syscall_t)(struct uc_struct *uc, void *user_data);
+ 
++// Callback function for tracing SYSRET (for uc_hook_intr())
++// @user_data: user data passed to tracing APIs.
++typedef void (*uc_cb_insn_sysret_t)(struct uc_struct *uc, void *user_data);
++
+ //> X86 registers
+ typedef enum uc_x86_reg {
+ 	UC_X86_REG_INVALID = 0,
+--- unicorn-1.0.1/qemu/target-i386/seg_helper.c	2017-04-20 02:14:24.000000000 -0400
++++ unicorn-1.0.1/qemu/target-i386/seg_helper.c	2018-03-15 15:26:32.034093427 -0400
+@@ -1012,6 +1012,14 @@
+ #ifdef TARGET_X86_64
+ void helper_sysret(CPUX86State *env, int dflag)
+ {
++    // Unicorn: call registered sysret hooks
++    struct hook *hook;
++    HOOK_FOREACH(env->uc, hook, UC_HOOK_INSN) {
++        if (!HOOK_BOUND_CHECK(hook, env->eip))
++            continue;
++        if (hook->insn == UC_X86_INS_SYSRET)
++            ((uc_cb_insn_sysret_t)hook->callback)(env->uc, hook->user_data);
++    }
+     int cpl, selector;
+ 
+     if (!(env->efer & MSR_EFER_SCE)) {
