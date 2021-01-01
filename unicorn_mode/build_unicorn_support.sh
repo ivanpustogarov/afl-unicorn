@@ -163,6 +163,7 @@ echo "[+] Configuration complete."
 
 echo "[*] Attempting to build Unicorn (fingers crossed!)..."
 
+sed -i 's|configure --cc=|configure --python=/usr/bin/python2 --cc=|g' Makefile
 sudo -u ${USERNAME} make || exit 1
 
 echo "[+] Build process successful!"
