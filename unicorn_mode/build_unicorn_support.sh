@@ -177,7 +177,7 @@ echo "[+] Unicorn installed successfully."
 echo "[*] Building Unicorn python bindings..."
 
 cd bindings/python || exit 1
-python setup.py install || exit 1
+python2 setup.py install || exit 1
 cd ../../ || exit 1
 
 echo "[+] Unicorn Python bindings installed successfully"
@@ -189,7 +189,7 @@ cd ../samples/simple || exit 1
 
 # Run afl-showmap on the sample application. If anything comes out then it must have worked!
 unset AFL_INST_RATIO
-echo 0 | ../../../afl-showmap -U -m none -q -o .test-instr0 -- python simple_test_harness.py ./sample_inputs/sample1.bin || exit 1
+echo 0 | ../../../afl-showmap -U -m none -q -o .test-instr0 -- python2 simple_test_harness.py ./sample_inputs/sample1.bin || exit 1
 
 if [ -s .test-instr0 ]
 then
