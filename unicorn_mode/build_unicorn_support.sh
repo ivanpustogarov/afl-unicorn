@@ -150,6 +150,7 @@ sudo -u ${USERNAME} patch -p0 <patches/cpu-exec.diff || exit 1
 sudo -u ${USERNAME} patch -p0 <patches/translate-all.diff || exit 1
 sudo -u ${USERNAME} patch -p0 <patches/cpuid_ext_cx16.diff || exit 1
 sudo -u ${USERNAME} patch -p0 <patches/sysret-cb.diff || exit 1
+sudo -u ${USERNAME} patch -p0 <patches/translate-a64.c.diff || exit 1
 
 echo "[+] Patching done."
 
