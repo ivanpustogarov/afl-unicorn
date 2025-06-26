@@ -26,6 +26,24 @@
 #
 # You must make sure that Unicorn Engine is not already installed before
 # running this script. If it is, please uninstall it first.
+# 
+# Here is what this script does in a nutshell:
+#
+# 	wget https://github.com/unicorn-engine/unicorn/archive/1.0.1.tar.gz
+# 	tar xzf 1.0.1.tar.gz  # --> will extract folder './unicorn-1.0.1'
+# 	patch -p0 <patches/config.diff
+# 	patch -p0 <patches/cpu-exec.diff
+# 	patch -p0 <patches/translate-all.diff
+# 	patch -p0 <patches/cpuid_ext_cx16.diff
+# 	patch -p0 <patches/sysret-cb.diff
+# 	patch -p0 <patches/translate-a64.c.diff
+# 	make
+# 	sudo make install
+#
+# This will install:
+# 	/usr/lib/libunicorn.a
+# 	/usr/lib/libunicorn.so
+# 	/usr/lib/libunicorn.so.1
 
 UNICORN_URL="https://github.com/unicorn-engine/unicorn/archive/1.0.1.tar.gz"
 UNICORN_SHA384="489f2e8d18b6be01f2975f5128c290ca0c6aa3107ac317b9b549786a0946978469683e8fa8b6dfc502f6f71242279b47"
