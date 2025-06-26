@@ -1,0 +1,15 @@
+--- unicorn-1.0.1/qemu/target-arm/translate-a64.c	2017-04-20 08:14:24.000000000 +0200
++++ unicorn-1.0.1/qemu/target-arm/translate-a64.c	2025-06-26 20:56:05.759173662 +0200
+@@ -2338,6 +2338,12 @@
+     case 0:
+         if (extract32(insn, 21, 1) == 1 && extract32(insn, 10, 2) == 2) {
+             disas_ldst_reg_roffset(s, insn);
++	} else if (extract32(insn, 21, 1) == 1 && 
++			extract32(insn, 10, 6) == 0x0 &&
++			extract32(insn, 24, 6) == 0x38 &&
++			extract32(insn, 31, 1) == 1) {
++		/* ldadd -- not implemented */
++        	unallocated_encoding(s);
+         } else {
+             /* Load/store register (unscaled immediate)
+              * Load/store immediate pre/post-indexed
